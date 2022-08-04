@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option go_package="github.com/samurenkoroma/accounts";
+package accounts;
+
+service AuthService{
+  rpc Login(LoginInput) returns (AuthToken) {}
+  rpc Register(LoginInput) returns (Client) {}
+}
+
+message Client{
+  string name = 1;
+  string login = 2;
+}
+
+message LoginInput{
+  string login = 1;
+  string password = 2;
+
+}
+message AuthToken{
+  string value = 1;
+}

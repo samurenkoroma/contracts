@@ -1,0 +1,42 @@
+directive @auth(roles: [Role!]) on FIELD_DEFINITION
+
+enum Role {
+    ADMIN
+    MEMBER
+    CLIENT
+}
+
+type AuthToken{
+    value: String!
+}
+
+input LoginInput {
+    login: String!
+    password: String!
+}
+type ClientProfile{
+    name: String
+    login: String!
+    email: String
+}
+
+input ResetTokenInput{
+    resetToken: String!
+}
+
+input RegisterInput {
+    login: String!
+    password: String!
+}
+
+
+type Query {
+    me: ClientProfile! @auth(roles: [MEMBER])
+    members: [ClientProfile!]! @auth(roles: [ADMIN])
+}
+
+type Mutation {
+    login(input: LoginInput):AuthToken
+    resetToken(input: ResetTokenInput):AuthToken @auth(roles: [MEMBER])
+    register(input: RegisterInput):String
+}
